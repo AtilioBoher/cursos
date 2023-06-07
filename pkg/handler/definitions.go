@@ -11,12 +11,12 @@ type Course struct {
 
 // oReq is the request for ordering courses
 type oReq struct {
-	UserId  string   `json:"userId"`
+	UserId  int   `json:"userId"`
 	Courses []Course `json:"courses"`
 }
 
 type oRes struct {
-	UserId  string   `json:"userId"`
+	UserId  int   `json:"userId"`
 	Courses []OrCourse `json:"courses"`
 }
 
@@ -28,4 +28,11 @@ type OrCourse struct {
 
 type Service interface {
 	SortCourses([]Course) ([]OrCourse, error)
+	StoreNewUser(name string) (int, error)
+	GetUser(id int) (string, error)
+}
+
+type User struct {
+	Name string `json:"name"`
+	Id	int `json:"userId"`
 }

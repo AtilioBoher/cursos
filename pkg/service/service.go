@@ -4,8 +4,8 @@ import (
 	"github.com/AtilioBoher/ordenadoDeCursos/pkg/handler"
 )
 
-func NewService(s Sorter) service {
-	return service{sorter: s}
+func NewService(s Sorter,r Repository) service {
+	return service{sorter: s, repository: r}
 }
 
 func (s *service) SortCourses(courses []handler.Course) ([]handler.OrCourse, error) {
@@ -14,4 +14,12 @@ func (s *service) SortCourses(courses []handler.Course) ([]handler.OrCourse, err
 		return []handler.OrCourse{}, err
 	}
 	return orByOrder, nil
+}
+
+func (s *service) StoreNewUser(name string) (int, error) {
+	return s.repository.StoreNewUser(name)
+}
+
+func (s *service) GetUser(id int) (string, error) {
+	return s.repository.GetUser(id)
 }

@@ -104,3 +104,27 @@ func (hdlr *myHandler) GetUser() gin.HandlerFunc {
 		ctx.JSON(http.StatusAccepted, res)
 	}
 }
+
+func (hdlr *myHandler) CargarCursos() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		req := oReq{}
+		if err := ctx.BindJSON(&req); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		if err := checkRequestData(req); err != nil {
+			ctx.JSON(404, gin.H{"error": err.Error()})
+			return
+		}
+		orCourses, err := hdlr.service.StoreCourses(req.Courses, req.UserId)
+		if err != nil {
+			ctx.JSON(422, gin.H{"error": err.Error()})
+			return
+		}
+		res := oRes{
+			UserId:  req.UserId,
+			Courses: orCourses,
+		}
+		ctx.JSON(http.StatusAccepted, res)
+	}
+}

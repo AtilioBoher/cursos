@@ -23,3 +23,7 @@ func (s *service) StoreNewUser(name string) (int, error) {
 func (s *service) GetUser(id int) (string, error) {
 	return s.repository.GetUser(id)
 }
+
+func (s *service) StoreCourses(courses []handler.Course, id int) ([]handler.OrCourse, error) {
+	return s.repository.StoreCourses(courses, id)
+}

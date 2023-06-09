@@ -14,4 +14,5 @@ type Sorter interface {
 type Repository interface {
 	StoreNewUser(name string) (int, error)
 	GetUser(id int) (string, error)
+	StoreCourses([]handler.Course, int) ([]handler.OrCourse, error)
 }

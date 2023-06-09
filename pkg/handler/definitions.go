@@ -28,8 +28,10 @@ type OrCourse struct {
 
 type Service interface {
 	SortCourses([]Course) ([]OrCourse, error)
+	StoreCourses([]Course, int) ([]OrCourse, error)
 	StoreNewUser(name string) (int, error)
 	GetUser(id int) (string, error)
+
 }
 
 type User struct {

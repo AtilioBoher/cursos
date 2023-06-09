@@ -10,12 +10,13 @@ import (
 )
 
 func main() {
-	repository := repository.NewRepository()
 	sorter := utils.NewSorter()
+	repository := repository.NewRepository(&sorter)
 	service := service.NewService(&sorter, &repository)
 	h := handler.New(&service)
 	r := gin.Default()
 	curso := r.Group("/curso")
+	curso.PUT("/cargarCursos", h.CargarCursos())
 	curso.POST("/ordenadoDeCursos", h.OrdenadoDeCursos())
 	curso.POST("/usuario", h.StoreNewUser())
 	curso.GET("/usuario/:id", h.GetUser())

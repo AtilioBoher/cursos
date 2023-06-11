@@ -4,7 +4,7 @@ import (
 	"github.com/AtilioBoher/ordenadoDeCursos/pkg/handler"
 )
 
-func NewService(s Sorter,r Repository) service {
+func NewService(s Sorter, r Repository) service {
 	return service{sorter: s, repository: r}
 }
 
@@ -26,4 +26,9 @@ func (s *service) GetUser(id int) (string, error) {
 
 func (s *service) StoreCourses(courses []handler.Course, id int) ([]handler.OrCourse, error) {
 	return s.repository.StoreCourses(courses, id)
+}
+
+func (s *service) CoursesInfo(id int) ([]string, []int, []string, []bool, []float32, []bool,
+	error) {
+	return s.repository.CoursesInfo(id)
 }

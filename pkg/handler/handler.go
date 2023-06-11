@@ -46,7 +46,7 @@ func checkRequestData(r oReq) error {
 		if c.Desired == "" {
 			return fmt.Errorf("falta especificar el nombre de uno de los cursos")
 		}
-		if c.Requierd == "" {
+		if c.Required == "" {
 			return fmt.Errorf("el curso %s no especifica el curso requerido", c.Desired)
 		}
 	}
@@ -124,6 +124,40 @@ func (hdlr *myHandler) CargarCursos() gin.HandlerFunc {
 		res := oRes{
 			UserId:  req.UserId,
 			Courses: orCourses,
+		}
+		ctx.JSON(http.StatusAccepted, res)
+	}
+}
+
+func (hdlr *myHandler) CoursesInfo() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+		if err != nil {
+			ctx.JSON(404, gin.H{"error": ("invalid ID" + err.Error())})
+			return
+		}
+		courseName, order, reqCourseName, passed, score, avalilable,
+		err := hdlr.service.CoursesInfo(int(id))
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		courses := []CourseInfo{}
+		for i := range courseName {
+			courses = append(courses, CourseInfo{
+				OrCourse:  OrCourse{
+					Name:  courseName[i],
+					Order: order[i],
+				},
+				Required:  reqCourseName[i],
+				Passed:    passed[i],
+				Score:     score[i],
+				Available: avalilable[i],
+			})
+		}
+		res := InfoResponse{
+			UserId:  int(id),
+			Courses: courses,
 		}
 		ctx.JSON(http.StatusAccepted, res)
 	}

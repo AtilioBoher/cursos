@@ -20,5 +20,6 @@ func main() {
 	curso.POST("/ordenadoDeCursos", h.OrdenadoDeCursos())
 	curso.POST("/usuario", h.StoreNewUser())
 	curso.GET("/usuario/:id", h.GetUser())
+	curso.GET("/listaCursos/:id", h.CoursesInfo())
 	r.Run()
 }

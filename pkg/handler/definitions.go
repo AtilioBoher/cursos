@@ -6,7 +6,7 @@ type myHandler struct {
 
 type Course struct {
 	Desired  string `json:"desiredCourse"`
-	Requierd string `json:"requiredCourse"`
+	Required string `json:"requiredCourse"`
 }
 
 // oReq is the request for ordering courses
@@ -26,12 +26,25 @@ type OrCourse struct {
 	Order int    `json:"order"`
 }
 
+type CourseInfo struct {
+	OrCourse
+	Required string `json:"requiredCourse"`
+	Passed bool `json:"passed"`
+	Score float32 `json:"score"`
+	Available bool `json:"available"`
+}
+
+type InfoResponse struct {
+	UserId  int   `json:"userId"`
+	Courses []CourseInfo `json:"courses"`
+}
+
 type Service interface {
 	SortCourses([]Course) ([]OrCourse, error)
 	StoreCourses([]Course, int) ([]OrCourse, error)
 	StoreNewUser(name string) (int, error)
 	GetUser(id int) (string, error)
-
+	CoursesInfo(id int) ([]string, []int, []string, []bool, []float32, []bool, error)
 }
 
 type User struct {

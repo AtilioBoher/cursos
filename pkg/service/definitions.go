@@ -15,4 +15,5 @@ type Repository interface {
 	StoreNewUser(name string) (int, error)
 	GetUser(id int) (string, error)
 	StoreCourses([]handler.Course, int) ([]handler.OrCourse, error)
+	CoursesInfo(id int) ([]string, []int, []string, []bool, []float32, []bool, error)
 }

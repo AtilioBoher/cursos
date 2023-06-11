@@ -21,7 +21,7 @@ func (s *sorter) SortByLevel(courses []handler.Course) ([][]handler.OrCourse, er
 	for _, c1 := range courses {
 		isLevelZero := true
 		for _, c2 := range courses {
-			if c1.Requierd == c2.Desired {
+			if c1.Required == c2.Desired {
 				isLevelZero = false
 				break
 			}
@@ -29,14 +29,14 @@ func (s *sorter) SortByLevel(courses []handler.Course) ([][]handler.OrCourse, er
 		if isLevelZero {
 			registered := false
 			for _, v := range orByLevel[0] {
-				if v.Name == c1.Requierd {
+				if v.Name == c1.Required {
 					registered = true
 					break
 				}
 			}
 			if !registered {
 				orByLevel[0] = append(orByLevel[0],
-					handler.OrCourse{Name: c1.Requierd, Order: order})
+					handler.OrCourse{Name: c1.Required, Order: order})
 				order++
 			}
 		}
@@ -51,7 +51,7 @@ func (s *sorter) SortByLevel(courses []handler.Course) ([][]handler.OrCourse, er
 		orByLevel = append(orByLevel, []handler.OrCourse{})
 		for _, c1 := range orByLevel[i] {
 			for _, c2 := range courses {
-				if c1.Name == c2.Requierd {
+				if c1.Name == c2.Required {
 					orByLevel[i+1] = append(orByLevel[i+1],
 						handler.OrCourse{Name: c2.Desired, Order: order})
 					order++
@@ -89,7 +89,7 @@ func (s *sorter) StoreCourses(courses []handler.Course, u *repository.User) ([]h
 	for _, c1 := range courses {
 		isLevelZero := true
 		for _, c2 := range courses {
-			if c1.Requierd == c2.Desired {
+			if c1.Required == c2.Desired {
 				isLevelZero = false
 				break
 			}
@@ -97,17 +97,17 @@ func (s *sorter) StoreCourses(courses []handler.Course, u *repository.User) ([]h
 		if isLevelZero {
 			registered := false
 			for _, v := range orByLevel[0] {
-				if v.Name == c1.Requierd {
+				if v.Name == c1.Required {
 					registered = true
 					break
 				}
 			}
 			if !registered {
 				orByLevel[0] = append(orByLevel[0],
-					handler.OrCourse{Name: c1.Requierd, Order: order})
+					handler.OrCourse{Name: c1.Required, Order: order})
 					u.Courses = append(u.Courses,
 					repository.Course{
-						Name:      c1.Requierd,
+						Name:      c1.Required,
 						Order:     order,
 						Required:  nil,
 						Passed:    false,
@@ -129,7 +129,7 @@ func (s *sorter) StoreCourses(courses []handler.Course, u *repository.User) ([]h
 		orByLevel = append(orByLevel, []handler.OrCourse{})
 		for _, c1 := range orByLevel[i] {
 			for _, c2 := range courses {
-				if c1.Name == c2.Requierd {
+				if c1.Name == c2.Required {
 					orByLevel[i+1] = append(orByLevel[i+1],
 						handler.OrCourse{Name: c2.Desired, Order: order})
 						u.Courses = append(u.Courses,

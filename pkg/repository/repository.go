@@ -45,8 +45,15 @@ func (r *repo) StoreCourses(courses []handler.Course, id int) ([]handler.OrCours
 	u.IdCourseLookUp = make(map[string]*Course)
 	// load courses
 	orCourses, err := r.sorter.StoreCourses(courses, u)
-	if err != nil {
-		return []handler.OrCourse{}, err
+	return orCourses, err
+}
+
+func (r *repo) CoursesInfo(id int) ([]string, []int, []string, []bool, []float32, []bool, error) {
+	u, ok := r.IdUserLookUp[id]
+	if !ok {
+		return []string{}, []int{}, []string{}, []bool{}, []float32{}, []bool{},
+		fmt.Errorf("user with id: %v not found", id)
 	}
-	return orCourses, nil
+	courseName, order, reqCourseName, passed, score, avalilable := u.CoursesInfo()
+	return courseName, order, reqCourseName, passed, score, avalilable, nil
 }

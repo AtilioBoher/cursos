@@ -162,3 +162,29 @@ func (hdlr *myHandler) CoursesInfo() gin.HandlerFunc {
 		ctx.JSON(http.StatusAccepted, res)
 	}
 }
+
+func (hdlr *myHandler) PassCourse() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, err := strconv.ParseInt(ctx.Query("id"), 10, 64)
+		if err != nil {
+			ctx.JSON(404, gin.H{"error": ("invalid ID" + err.Error())})
+			return
+		}
+		name := ctx.Query("name")
+		if name == "" {
+			ctx.JSON(404, gin.H{"error": "name required"})
+			return
+		}
+		score, err := strconv.ParseFloat(ctx.Query("score"), 32)
+		if err != nil {
+			ctx.JSON(404, gin.H{"error": ("invalid score" + err.Error())})
+			return
+		}
+		if err := hdlr.service.PassCourse(int(id),name, float32(score)); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		ctx.JSON(http.StatusAccepted, gin.H{"messege": fmt.Sprintf("course %s passed with score: %f",
+		name, score)})
+	}
+}

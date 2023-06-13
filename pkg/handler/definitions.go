@@ -45,6 +45,7 @@ type Service interface {
 	StoreNewUser(name string) (int, error)
 	GetUser(id int) (string, error)
 	CoursesInfo(id int) ([]string, []int, []string, []bool, []float32, []bool, error)
+	PassCourse(id int, courseName string, score float32) error
 }
 
 type User struct {

@@ -13,8 +13,6 @@ type User struct {
 	Name    string
 	Id      int
 	Courses []Course
-	IdCourseLookUp map[string]*Course
-	State   CoursesState
 }
 
 type Course struct {
@@ -24,12 +22,6 @@ type Course struct {
 	Passed    bool
 	Score     float32
 	Available bool
-}
-
-type CoursesState struct {
-	PassedCourses      []*Course
-	AvailableCourses    []*Course
-	NotAvailableCourses []*Course
 }
 
 type Sorter interface {

@@ -105,17 +105,15 @@ func (s *sorter) StoreCourses(courses []handler.Course, u *repository.User) ([]h
 			if !registered {
 				orByLevel[0] = append(orByLevel[0],
 					handler.OrCourse{Name: c1.Required, Order: order})
-					u.Courses = append(u.Courses,
-					repository.Course{
-						Name:      c1.Required,
-						Order:     order,
-						Required:  nil,
-						Passed:    false,
-						Score:     0,
-						Available: true,
-					})
-					u.State.AvailableCourses = append(u.State.AvailableCourses, &u.Courses[order])
-					u.IdCourseLookUp[u.Courses[order].Name] = &u.Courses[order]
+				u.Courses = append(u.Courses,
+				repository.Course{
+					Name:      c1.Required,
+					Order:     order,
+					Required:  nil,
+					Passed:    false,
+					Score:     0,
+					Available: true,
+				})
 				order++
 			}
 		}
@@ -132,17 +130,24 @@ func (s *sorter) StoreCourses(courses []handler.Course, u *repository.User) ([]h
 				if c1.Name == c2.Required {
 					orByLevel[i+1] = append(orByLevel[i+1],
 						handler.OrCourse{Name: c2.Desired, Order: order})
+
+						var auxRequired *repository.Course
+						for j := range u.Courses {
+							if c1.Name == u.Courses[j].Name {
+								auxRequired = &u.Courses[j]
+								break
+							}
+						}
+
 						u.Courses = append(u.Courses,
 							repository.Course{
 								Name:      c2.Desired,
 								Order:     order,
-								Required:  u.IdCourseLookUp[c1.Name],
+								Required:  auxRequired,
 								Passed:    false,
 								Score:     0,
 								Available: false,
 							})
-							u.State.NotAvailableCourses = append(u.State.NotAvailableCourses, &u.Courses[order])
-							u.IdCourseLookUp[u.Courses[order].Name] = &u.Courses[order]
 					order++
 					remaining--
 				}

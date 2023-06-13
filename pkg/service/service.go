@@ -32,3 +32,7 @@ func (s *service) CoursesInfo(id int) ([]string, []int, []string, []bool, []floa
 	error) {
 	return s.repository.CoursesInfo(id)
 }
+
+func (s *service) PassCourse(id int, courseName string, score float32) error {
+	return s.repository.PassCourse(id, courseName, score)
+}

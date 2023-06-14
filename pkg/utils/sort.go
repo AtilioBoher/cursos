@@ -9,10 +9,12 @@ import (
 
 type sorter struct{}
 
+// NewSorter returns a sorter struct.
 func NewSorter() sorter {
 	return sorter{}
 }
 
+// SortByLevel sort courses by level.
 func (s *sorter) SortByLevel(courses []handler.Course) ([][]handler.OrCourse, error) {
 	var orByLevel [][]handler.OrCourse
 	order := 0
@@ -68,6 +70,7 @@ func (s *sorter) SortByLevel(courses []handler.Course) ([][]handler.OrCourse, er
 	return orByLevel, nil
 }
 
+// SortByOrder sorts the courses by the order in which they are recommended to be taken.
 func (s *sorter) SortByOrder(courses []handler.Course) ([]handler.OrCourse, error) {
 	orByLevel, err := s.SortByLevel(courses)
 	if err != nil {
@@ -81,6 +84,7 @@ func (s *sorter) SortByOrder(courses []handler.Course) ([]handler.OrCourse, erro
 
 }
 
+// StoreCourses order and store the courses for a specified user.
 func (s *sorter) StoreCourses(courses []handler.Course, u *repository.User) ([]handler.OrCourse, error) {
 	var orByLevel [][]handler.OrCourse
 	order := 0

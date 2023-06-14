@@ -20,7 +20,7 @@ func main() {
 	curso.GET("/usuario/:id", h.GetUser())
 	curso.GET("/listaUsuarios", h.UsersInfo())
 	curso.PUT("/cargarCursos", h.CargarCursos())
-	curso.POST("/ordenadoDeCursos", h.OrdenadoDeCursos()) // este es la consigna, el resto agregué como para prácticar
+	curso.POST("/ordenadoDeCursos", h.OrdenadoDeCursos()) // este es la consigna, el resto agregué como para practicar
 	curso.GET("/listaCursos/:id", h.CoursesInfo())
 	curso.PUT("/aprobarCurso", h.PassCourse())
 	curso.DELETE("/borrarUsuario/:id", h.DeleteUser())

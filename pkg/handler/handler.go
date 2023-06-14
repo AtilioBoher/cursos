@@ -1,4 +1,4 @@
-// myHdlrPkg (My Handler Package) is a package to handle the request...
+// myHdlrPkg (My Handler Package) is a package to handle the request from the course
 package handler
 
 import (
@@ -9,10 +9,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// New returns an instance of myHandler struct, to work properly it needs a struct which implements
+// the Service interface.
 func New(s Service) myHandler {
 	return myHandler{service: s}
 }
 
+// OrdenadoDeCursos receive a list of courses, check for missing fields and duplicates, and then
+// sort the courses.
 func (hdlr *myHandler) OrdenadoDeCursos() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		req := oReq{}
@@ -38,6 +42,7 @@ func (hdlr *myHandler) OrdenadoDeCursos() gin.HandlerFunc {
 	}
 }
 
+// checkRequestData checks data for duplicates and empty fields of the list of courses supplied.
 func checkRequestData(r oReq) error {
 	if r.UserId == 0 {
 		return fmt.Errorf("es necesario especificar el ID del usuario")
@@ -64,6 +69,7 @@ func checkRequestData(r oReq) error {
 	return nil
 }
 
+// StoreNewUser creates a new User instance.
 func (hdlr *myHandler) StoreNewUser() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		req := User{}
@@ -85,6 +91,7 @@ func (hdlr *myHandler) StoreNewUser() gin.HandlerFunc {
 	}
 }
 
+// GetUser returns the data from the user with the id supplied as a query parameter.
 func (hdlr *myHandler) GetUser() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
@@ -105,6 +112,7 @@ func (hdlr *myHandler) GetUser() gin.HandlerFunc {
 	}
 }
 
+// CargarCursos stores the list of courses supplied for the user with the id specified.
 func (hdlr *myHandler) CargarCursos() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		req := oReq{}
@@ -129,6 +137,8 @@ func (hdlr *myHandler) CargarCursos() gin.HandlerFunc {
 	}
 }
 
+// CoursesInfo return all the info from the courses of the user with the id supplied as a query
+// parameter.
 func (hdlr *myHandler) CoursesInfo() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
@@ -163,6 +173,10 @@ func (hdlr *myHandler) CoursesInfo() gin.HandlerFunc {
 	}
 }
 
+// PassCourse pass the course with the score supplied by query parameters, of the user also
+// indicated in the query parameters.
+//
+// Example localhost:8080/curso/aprobarCurso?id=1&name=E&score=8.8
 func (hdlr *myHandler) PassCourse() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.ParseInt(ctx.Query("id"), 10, 64)
@@ -189,6 +203,7 @@ func (hdlr *myHandler) PassCourse() gin.HandlerFunc {
 	}
 }
 
+// DeleteUser deletes the user indicated by the query parameter.
 func (hdlr *myHandler) DeleteUser() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
@@ -207,6 +222,7 @@ func (hdlr *myHandler) DeleteUser() gin.HandlerFunc {
 	}
 }
 
+// UsersInfo returns the information from all the users stored previously.
 func (hdlr *myHandler) UsersInfo() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		names, ids, err := hdlr.service.UsersInfo()

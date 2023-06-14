@@ -6,6 +6,7 @@ import (
 	"github.com/AtilioBoher/ordenadoDeCursos/pkg/handler"
 )
 
+// NewRepository returns a repository struct.
 func NewRepository(s Sorter) repo {
 	return repo{
 		Users:        []User{},
@@ -15,6 +16,7 @@ func NewRepository(s Sorter) repo {
 	}
 }
 
+// StoreNewUser stores a user with the name supplied and returns the id generated.
 func (r *repo) StoreNewUser(name string) (int, error) {
 	for _, u := range r.Users {
 		if u.Name == name {
@@ -30,6 +32,7 @@ func (r *repo) StoreNewUser(name string) (int, error) {
 	return r.LastId, nil
 }
 
+// GetUser returns the name of the user with the id supplied.
 func (r *repo) GetUser(id int) (string, error) {
 	u, ok := r.IdUserLookUp[id]
 	if ok {
@@ -38,6 +41,8 @@ func (r *repo) GetUser(id int) (string, error) {
 	return "", fmt.Errorf("user with id: %v not found", id)
 }
 
+// StoreCourses stores the courses supplied for the user with the id speccified, and returns the
+// ordered courses.
 func (r *repo) StoreCourses(courses []handler.Course, id int) ([]handler.OrCourse, error) {
 	u, ok := r.IdUserLookUp[id]
 	if !ok {
@@ -50,6 +55,7 @@ func (r *repo) StoreCourses(courses []handler.Course, id int) ([]handler.OrCours
 	return orCourses, err
 }
 
+// CoursesInfo returns slices with the information of all the courses of the user with the id supplied.
 func (r *repo) CoursesInfo(id int) ([]string, []int, []string, []bool, []float32, []bool, error) {
 	u, ok := r.IdUserLookUp[id]
 	if !ok {
@@ -60,14 +66,16 @@ func (r *repo) CoursesInfo(id int) ([]string, []int, []string, []bool, []float32
 	return courseName, order, reqCourseName, passed, score, avalilable, nil
 }
 
-func (r *repo) PassCourse(id int, courseName string, score float32) error {
-	u, ok := r.IdUserLookUp[id]
+// PassCourse approves the course of the name indicated with the score supplied.
+func (r *repo) PassCourse(userId int, courseName string, score float32) error {
+	u, ok := r.IdUserLookUp[userId]
 	if !ok {
-		return fmt.Errorf("user with id: %v not found", id)
+		return fmt.Errorf("user with id: %v not found", userId)
 	}
 	return u.passCourse(courseName, score)
 }
 
+// DeleteUser deletes the user with the id given, and returns his name.
 func (r *repo) DeleteUser(id int) (string, error) {
 	ok := false
 	index := 0
@@ -87,6 +95,7 @@ func (r *repo) DeleteUser(id int) (string, error) {
 	return name, nil
 }
 
+// UserInfo returns the information from all the users.
 func (r *repo) UsersInfo() ([]string, []int, error){
 	var names []string
 	var ids []int

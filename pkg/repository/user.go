@@ -2,6 +2,7 @@ package repository
 
 import "fmt"
 
+// CoursesInfo returns the information of all the courses from the user.
 func (u *User) CoursesInfo() ([]string, []int, []string, []bool, []float32, []bool) {
 	var (
 		courseName, reqCourseName []string
@@ -25,6 +26,7 @@ func (u *User) CoursesInfo() ([]string, []int, []string, []bool, []float32, []bo
 	return courseName, order, reqCourseName, passed, score, avalilable
 }
 
+// passCourse pass the course indicated by the name with the score supplied.
 func (u *User) passCourse(courseName string, score float32) error {
 	ok := false
 	var c *Course
@@ -46,8 +48,9 @@ func (u *User) passCourse(courseName string, score float32) error {
 			c.Required.Name)
 		}
 	}
-	if score < 6 {
-		return fmt.Errorf("to pass the course the score must be at least 6")
+
+	if score < 6 || score > 10 {
+		return fmt.Errorf("to pass the course the score must be between 6 and 10")
 	}
 	c.Passed = true
 	c.Score = score

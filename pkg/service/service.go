@@ -36,3 +36,11 @@ func (s *service) CoursesInfo(id int) ([]string, []int, []string, []bool, []floa
 func (s *service) PassCourse(id int, courseName string, score float32) error {
 	return s.repository.PassCourse(id, courseName, score)
 }
+
+func (s *service) DeleteUser(id int) (string, error) {
+	return s.repository.DeleteUser(id)
+}
+
+func (s *service) UsersInfo() ([]string, []int, error) {
+	return s.repository.UsersInfo()
+}

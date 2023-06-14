@@ -67,3 +67,33 @@ func (r *repo) PassCourse(id int, courseName string, score float32) error {
 	}
 	return u.passCourse(courseName, score)
 }
+
+func (r *repo) DeleteUser(id int) (string, error) {
+	ok := false
+	index := 0
+	for i, u := range r.Users {
+		if u.Id == id {
+			ok = true
+			index = i
+			break
+		}
+	}
+	if !ok {
+		return "", fmt.Errorf("user with id: %v not found", id)
+	}
+	delete(r.IdUserLookUp,r.Users[index].Id)
+	name := r.Users[index].Name
+	r.Users = append(r.Users[:index], r.Users[index+1:]...)
+	return name, nil
+}
+
+func (r *repo) UsersInfo() ([]string, []int, error){
+	var names []string
+	var ids []int
+	for _, u := range r.Users {
+		names = append(names, u.Name)
+		ids = append(ids, u.Id)
+	}
+	return names, ids, nil
+
+}

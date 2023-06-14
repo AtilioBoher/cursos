@@ -17,4 +17,6 @@ type Repository interface {
 	StoreCourses([]handler.Course, int) ([]handler.OrCourse, error)
 	CoursesInfo(id int) ([]string, []int, []string, []bool, []float32, []bool, error)
 	PassCourse(id int, courseName string, score float32) error
+	DeleteUser(id int) (string, error)
+	UsersInfo() ([]string, []int, error)
 }

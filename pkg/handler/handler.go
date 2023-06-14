@@ -188,3 +188,39 @@ func (hdlr *myHandler) PassCourse() gin.HandlerFunc {
 		name, score)})
 	}
 }
+
+func (hdlr *myHandler) DeleteUser() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+		if err != nil {
+			ctx.JSON(404, gin.H{"error": ("invalid ID" + err.Error())})
+			return
+		}
+		name, err := hdlr.service.DeleteUser(int(id));
+		if  err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		ctx.JSON(http.StatusAccepted, gin.H{"messege": fmt.Sprintf("user %s, with id: %d was " + 
+		"successfully deleted",
+		name, id)})
+	}
+}
+
+func (hdlr *myHandler) UsersInfo() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		names, ids, err := hdlr.service.UsersInfo()
+		if  err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		var users []User
+		for i := range names {
+			users = append(users, User{
+				Name: names[i],
+				Id:   ids[i],
+			})
+		}
+		ctx.JSON(http.StatusAccepted, users)
+	}
+}

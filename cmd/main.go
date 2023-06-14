@@ -16,11 +16,13 @@ func main() {
 	h := handler.New(&service)
 	r := gin.Default()
 	curso := r.Group("/curso")
-	curso.PUT("/cargarCursos", h.CargarCursos())
-	curso.POST("/ordenadoDeCursos", h.OrdenadoDeCursos())
 	curso.POST("/usuario", h.StoreNewUser())
 	curso.GET("/usuario/:id", h.GetUser())
+	curso.GET("/listaUsuarios", h.UsersInfo())
+	curso.PUT("/cargarCursos", h.CargarCursos())
+	curso.POST("/ordenadoDeCursos", h.OrdenadoDeCursos()) // este es la consigna, el resto agregué como para prácticar
 	curso.GET("/listaCursos/:id", h.CoursesInfo())
 	curso.PUT("/aprobarCurso", h.PassCourse())
+	curso.DELETE("/borrarUsuario/:id", h.DeleteUser())
 	r.Run()
 }

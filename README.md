@@ -90,8 +90,11 @@ Los cursos son suministrados en un archivo JSON con el siguiente formato (como p
 	]
 }
 ```
+
 Donde los cursos siguen la siguiente estructura de correlatividad entre ellos.
+
 ![Screenshot](example_courses.svg)
+
 Si no hay errores de formato, ni de lógica en la organización de los cursos, los mismos son almacenados de forma ordenada para el usuario indicado, y la respuesta luce como la siguiente.
 ```json
 {
